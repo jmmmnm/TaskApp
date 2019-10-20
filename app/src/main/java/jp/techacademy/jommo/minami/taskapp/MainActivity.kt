@@ -20,14 +20,14 @@ class MainActivity : AppCompatActivity() {
         // ListViewの設定
         mTaskAdapter = TaskAdapter(this@MainActivity)
 
-        // ListViewをタップした時の処理
+        // ListViewをタップしたときの処理
         listView1.setOnItemClickListener { parent, view, position, id ->
             // 入力・編集する画面に遷移させる
         }
 
-        // ListViewを長押しした時の処理
+        // ListViewを長押ししたときの処理
         listView1.setOnItemLongClickListener { parent, view, position, id ->
-            //  タスクを削除する
+            // タスクを削除する
             true
         }
 
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun reloadListView() {
-        //　後にTaskクラスに変更する
+        // 後でTaskクラスに変更する
         val taskList = mutableListOf("aaa", "bbb", "ccc")
 
         mTaskAdapter.taskList = taskList

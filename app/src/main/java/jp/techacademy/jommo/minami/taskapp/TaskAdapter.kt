@@ -1,11 +1,19 @@
 package jp.techacademy.jommo.minami.taskapp
 
+import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.TextView
 
-class TaskAdapter: BaseAdapter() {
+class TaskAdapter(context: Context): BaseAdapter() {
+    private val mLayoutInflater: LayoutInflater
     var taskList = mutableListOf<String>()
+
+    init {
+        this.mLayoutInflater = LayoutInflater.from(context)
+    }
 
     override fun getCount(): Int {
         return taskList.size
@@ -15,11 +23,19 @@ class TaskAdapter: BaseAdapter() {
         return taskList[position]
     }
 
-    override fun getItemId(p0: Int): Long {
+    override fun getItemId(position: Int): Long {
         return 0
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val view: View = convertView ?: mLayoutInflater.inflate(android.R.layout.simple_list_item_2, null)
+
+        val textView1 = view.findViewById<TextView>(android.R.id.text1)
+        val textView2 = view.findViewById<TextView>(android.R.id.text2)
+
+        // 後でTaskクラスから情報を取得するように変更する
+        textView1.text = taskList[position]
+
+        return view
     }
 }
