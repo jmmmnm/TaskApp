@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_main.*
 import io.realm.RealmChangeListener
 import io.realm.Sort
-import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         val task = Task()
         task.title = "作業"
         task.contents = "プログラムを書いてPUSHする"
-        task.data = Date()
+        task.date = Date()
         task.id = 0
         mRealm.beginTransaction()
         mRealm.copyToRealmOrUpdate(task)
