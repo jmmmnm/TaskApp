@@ -11,7 +11,7 @@ import java.util.*
 
 class TaskAdapter(context: Context): BaseAdapter() {
     private val mLayoutInflater: LayoutInflater
-    var taskList = mutableListOf<String>()
+    var taskList = mutableListOf<Task>()
 
     init {
         this.mLayoutInflater = LayoutInflater.from(context)
@@ -37,7 +37,7 @@ class TaskAdapter(context: Context): BaseAdapter() {
 
         textView1.text = taskList[position].title
 
-        val simpleDateFormat = simpleDateFormat("yyyy-mm-dd HH:mm", Locale.JAPANESE)
+        val simpleDateFormat = SimpleDateFormat( "yyyy-mm-dd HH:mm", Locale.JAPANESE)
         val date = taskList[position].date
         textView2.text = simpleDateFormat.format(date)
 
