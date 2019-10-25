@@ -25,7 +25,7 @@ class InputActivity : AppCompatActivity() {
                     mYear = year
                     mMonth = month
                     mDay = dayOfMonth
-                    val dateString = mYear.toString() + "/" + String.format("%02d", mMonth + 1) + String.format("%02d", mDay)
+                    val dateString = mYear.toString() + "/" + String.format("%02d", mMonth + 1) + "/" + String.format("%02d", mDay)
                     date_button.text = dateString
                 }, mYear, mMonth, mDay)
         datePickerDialog.show()
@@ -47,7 +47,6 @@ class InputActivity : AppCompatActivity() {
         finish()
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_input)
@@ -66,26 +65,37 @@ class InputActivity : AppCompatActivity() {
 
         // EXTRA_TASK から Task の id を取得して、 id から Task のインスタンスを取得する
         val intent = intent
-        val taskId = intent.getIntExtra("EXTRA_TASK", -1)
+        val taskId = intent.getIntExtra(EXTRA_TASK, -1)
         val realm = Realm.getDefaultInstance()
         mTask = realm.where(Task::class.java).equalTo("id", taskId).findFirst()
         realm.close()
 
-
         if (mTask == null) {
             // 新規作成の場合
-            var calendar = Calendar.getInstance()
+            val calendar = Calendar.getInstance()
+            mYear = calendar.get(Calendar.YEAR)
+            mMonth = calendar.get(Calendar.MONTH)
+            mDay = calendar.get(Calendar.DAY_OF_MONTH)
+            mHour = calendar.get(Calendar.HOUR_OF_DAY)
+            mMinute = calendar.get(Calendar.MINUTE)
+        } else {
+            // 更新の場合
+            title_edit_text.setText(mTask!!.title)
+            content_edit_text.setText(mTask!!.contents)
+
+            val calendar = Calendar.getInstance()
+            calendar.time = mTask!!.date
             mYear = calendar.get(Calendar.YEAR)
             mMonth = calendar.get(Calendar.MONTH)
             mDay = calendar.get(Calendar.DAY_OF_MONTH)
             mHour = calendar.get(Calendar.HOUR_OF_DAY)
             mMinute = calendar.get(Calendar.MINUTE)
 
-            val dateString = mYear.toString() + "/" + String.format("%02d", mMonth + 1) + "/" + String.format("$02d", mDay)
-            val timestring = String.format("%02d", mHour) + ":" + String.format("%02d", mMinute)
+            val dateString = mYear.toString() + "/" + String.format("%02d", mMonth + 1) + "/" + String.format("%02d", mDay)
+            val timeString = String.format("%02d", mHour) + ":" + String.format("%02d", mMinute)
 
             date_button.text = dateString
-            times_button.text = timestring
+            times_button.text = timeString
         }
     }
 
@@ -94,7 +104,7 @@ class InputActivity : AppCompatActivity() {
 
         realm.beginTransaction()
 
-        if(mTask == null) {
+        if (mTask == null) {
             // 新規作成の場合
             mTask = Task()
 
@@ -115,37 +125,12 @@ class InputActivity : AppCompatActivity() {
         mTask!!.title = title
         mTask!!.contents = content
         val calendar = GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute)
-        var date = calendar.time
+        val date = calendar.time
         mTask!!.date = date
+
         realm.copyToRealmOrUpdate(mTask!!)
+        realm.commitTransaction()
+
         realm.close()
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

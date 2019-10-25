@@ -23,7 +23,7 @@
         <activity
             android:name=".InputActivity"
             android:label="タスク"
-            android:parentAcrivetyName=".MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
