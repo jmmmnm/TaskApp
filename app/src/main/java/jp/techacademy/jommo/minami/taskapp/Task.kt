@@ -11,6 +11,8 @@ open class Task : RealmObject(), Serializable{
     var date: Date = Date()     // 日時
     var category: String = ""   // カテゴリ
 
+
+
     // id をプライマリーキーとして設定
     @PrimaryKey
     var id: Int = 0

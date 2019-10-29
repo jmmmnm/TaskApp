@@ -10,10 +10,12 @@ import android.content.Intent
 import android.support.v7.app.AlertDialog
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.util.Log
 
 const val EXTRA_TASK = "jp.techacademy.jommo.minami.taskapp.TASK"
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var mRealm: Realm
     private val mRealmListener = object : RealmChangeListener<Realm> {
         override fun onChange(element: Realm) {
@@ -27,10 +29,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         fab.setOnClickListener { view ->
             val intent = Intent(this@MainActivity, InputActivity::class.java)
             startActivity(intent)
         }
+
+        fab2.setOnClickListener { view ->
+            narrowedListView()
+        }
+
+
 
         // Realmの設定
         mRealm = Realm.getDefaultInstance()
@@ -104,6 +113,24 @@ class MainActivity : AppCompatActivity() {
         // 表示を更新するために、アダプターにデータが変更されたことを知らせる
         mTaskAdapter.notifyDataSetChanged()
     }
+
+    private fun narrowedListView() {
+
+        val narrowed= category_narrowed_text.text.toString()
+
+        val taskRealmResults = mRealm.where(Task::class.java).equalTo("category", narrowed)
+
+        // 上記の結果を、TaskList としてセットする
+
+        mTaskAdapter.taskList = mRealm.copyFromRealm(taskRealmResults)
+
+        // TaskのListView用のアダプタに渡す
+        listView1.adapter = mTaskAdapter
+
+        // 表示を更新するために、アダプターにデータが変更されたことを知らせる
+        mTaskAdapter.notifyDataSetChanged()
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
