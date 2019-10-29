@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
 
         val narrowed= category_narrowed_text.text.toString()
 
-        val taskRealmResults = mRealm.where(Task::class.java).equalTo("category", narrowed)
+        val taskRealmResults = mRealm.where(Task::class.java).equalTo("category", narrowed).findAll()
 
         // 上記の結果を、TaskList としてセットする
 
