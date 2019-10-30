@@ -22,8 +22,9 @@ class MainActivity : AppCompatActivity() {
             reloadListView()
         }
     }
-
     private lateinit var mTaskAdapter: TaskAdapter
+
+    var narrowed : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +36,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        fab2.setOnClickListener { view ->
-            narrowedListView()
+        bottun1.setOnClickListener { view ->
+                         narrowedListView()
         }
 
 
@@ -116,18 +117,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun narrowedListView() {
 
-        val narrowed= category_narrowed_text.text.toString()
+        narrowed = category_narrowed_text.text.toString()
 
-        val taskRealmResults = mRealm.where(Task::class.java).equalTo("category", narrowed).findAll()
+        Log.d("BUTTON1CLICK",narrowed)
 
-        // 上記の結果を、TaskList としてセットする
+        if(narrowed == ""){
+            val taskRealmResults = mRealm.where(Task::class.java).findAll().sort("date", Sort.DESCENDING)
+            mTaskAdapter.taskList = mRealm.copyFromRealm(taskRealmResults)
+        }else {
+            val taskRealmResults = mRealm.where(Task::class.java).equalTo("category", narrowed).findAll()
+            mTaskAdapter.taskList = mRealm.copyFromRealm(taskRealmResults)
+        }
 
-        mTaskAdapter.taskList = mRealm.copyFromRealm(taskRealmResults)
-
-        // TaskのListView用のアダプタに渡す
         listView1.adapter = mTaskAdapter
 
-        // 表示を更新するために、アダプターにデータが変更されたことを知らせる
         mTaskAdapter.notifyDataSetChanged()
     }
 
