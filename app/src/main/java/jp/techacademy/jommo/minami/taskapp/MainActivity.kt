@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         bottun1.setOnClickListener { view ->
-                         narrowedListView()
+            reloadListView()
         }
 
 
@@ -101,21 +101,8 @@ class MainActivity : AppCompatActivity() {
         reloadListView()
     }
 
+
     private fun reloadListView() {
-        // Realmデータベースから、「全てのデータを取得して新しい日時順に並べた結果」を取得
-        val taskRealmResults = mRealm.where(Task::class.java).findAll().sort("date", Sort.DESCENDING)
-
-        // 上記の結果を、TaskList としてセットする
-        mTaskAdapter.taskList = mRealm.copyFromRealm(taskRealmResults)
-
-        // TaskのListView用のアダプタに渡す
-        listView1.adapter = mTaskAdapter
-
-        // 表示を更新するために、アダプターにデータが変更されたことを知らせる
-        mTaskAdapter.notifyDataSetChanged()
-    }
-
-    private fun narrowedListView() {
 
         narrowed = category_narrowed_text.text.toString()
 
